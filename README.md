@@ -16,8 +16,14 @@ cd my-nest-app
 # 3. Create Environment variables file.
 cp .env.example .env
 
-# 3. Install dependencies. (Make sure yarn is installed: https://yarnpkg.com/lang/en/docs/install)
+# 4. Install dependencies. (Make sure yarn is installed: https://yarnpkg.com/lang/en/docs/install)
 yarn
+
+# 5. Run docker container mariadb
+docker compose -f docker-compose_mariadb.yml up -d
+
+# 6. Start
+yarn dev
 ```
 
 ## Checklist
