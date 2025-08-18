@@ -123,6 +123,13 @@ export class ApiConfigService {
     };
   }
 
+  get googleAuthData() {
+    return {
+      client_id: this.getString('GOOGLE_CLIENT_ID'),
+      client_secret: this.getString('GOOGLE_CLIENT_SECRET'),
+    };
+  }
+
   get awsS3Config() {
     return {
       bucketRegion: this.getString('AWS_S3_BUCKET_REGION'),
