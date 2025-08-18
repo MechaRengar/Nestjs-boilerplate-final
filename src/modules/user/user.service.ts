@@ -76,7 +76,7 @@ export class UserService {
     }
 
     await this.userRepository.save(user);
-
+    
     user.settings = await this.createSettings(
       user.id,
       plainToClass(CreateSettingsDto, {
@@ -97,7 +97,7 @@ export class UserService {
     return items.toPageDto(pageMetaDto);
   }
 
-  async getUser(userId: Uuid): Promise<UserDto> {
+  async getUser(userId: number): Promise<UserDto> {
     const queryBuilder = this.userRepository.createQueryBuilder('user');
 
     queryBuilder.where('user.id = :userId', { userId });
@@ -112,7 +112,7 @@ export class UserService {
   }
 
   createSettings(
-    userId: Uuid,
+    userId: number,
     createSettingsDto: CreateSettingsDto,
   ): Promise<UserSettingsEntity> {
     return this.commandBus.execute<CreateSettingsCommand, UserSettingsEntity>(

@@ -1,3 +1,4 @@
+import { IsOptional } from 'class-validator';
 import { AbstractDto } from '../../../common/dto/abstract.dto.ts';
 import { RoleType } from '../../../constants/role-type.ts';
 import {
@@ -29,6 +30,7 @@ export class UserDto extends AbstractDto {
   email?: string | null;
 
   @StringFieldOptional({ nullable: true })
+  @IsOptional()
   avatar?: string | null;
 
   @PhoneFieldOptional({ nullable: true })
@@ -43,7 +45,7 @@ export class UserDto extends AbstractDto {
     this.lastName = user.lastName;
     this.role = user.role;
     this.email = user.email;
-    this.avatar = user.avatar;
+    this.avatar = user.avatar || null;
     this.phone = user.phone;
     this.isActive = options?.isActive;
   }

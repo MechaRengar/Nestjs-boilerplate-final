@@ -140,7 +140,7 @@ export class UserController {
   @Get(':id')
   @Auth([RoleType.USER, RoleType.ADMIN])
   @ApiOkResponse({ type: UserDto })
-  async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
+  async getUser(@UUIDParam('id') userId: number): Promise<UserDto> {
     return this.userService.getUser(userId);
   }
 }

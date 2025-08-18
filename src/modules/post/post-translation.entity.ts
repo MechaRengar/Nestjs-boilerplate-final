@@ -16,7 +16,7 @@ export class PostTranslationEntity extends AbstractTranslationEntity<PostTransla
   description!: string;
 
   @Column({ type: 'uuid' })
-  postId!: Uuid;
+  postId!: number;
 
   @ManyToOne(() => PostEntity, (postEntity) => postEntity.translations, {
     onDelete: 'CASCADE',

@@ -188,7 +188,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.USER])
   @ApiOkResponse({ type: UserDto, description: 'Get user by ID' })
-  async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
+  async getUser(@UUIDParam('id') userId: number): Promise<UserDto> {
     return this.userService.getUser(userId);
   }
 
@@ -273,7 +273,7 @@ export class UserService {
     return userEntity;
   }
 
-  async getUser(userId: Uuid): Promise<UserDto> {
+  async getUser(userId: number): Promise<UserDto> {
     const userEntity = await this.findOne({ id: userId });
 
     return userEntity.toDto();
@@ -535,7 +535,7 @@ user!: Relation<UserEntity>;
 
 // Foreign key column
 @Column({ type: 'uuid' })
-userId!: Uuid;
+userId!: number;
 ```
 
 ### Entity Best Practices
@@ -606,7 +606,7 @@ import { UserNotFoundException } from '../../../exceptions/user-not-found.except
 import { UserEntity } from '../user.entity.ts';
 
 export class GetUserQuery implements IQuery {
-  constructor(public readonly userId: Uuid) {}
+  constructor(public readonly userId: number) {}
 }
 
 @QueryHandler(GetUserQuery)
@@ -726,15 +726,15 @@ async getDataWithOptionalAuth(@AuthUser() user?: UserEntity) {
 ```typescript
 // UUID parameter validation
 @Get(':id')
-async getUser(@UUIDParam('id') userId: Uuid) {
+async getUser(@UUIDParam('id') userId: number) {
   return this.service.getUser(userId);
 }
 
 // Multiple UUID parameters
 @Post(':userId/posts/:postId')
 async updateUserPost(
-  @UUIDParam('userId') userId: Uuid,
-  @UUIDParam('postId') postId: Uuid,
+  @UUIDParam('userId') userId: number,
+  @UUIDParam('postId') postId: number,
   @Body() updateDto: UpdatePostDto,
 ) {
   return this.service.updateUserPost(userId, postId, updateDto);

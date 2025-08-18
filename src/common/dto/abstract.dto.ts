@@ -1,17 +1,17 @@
-import { DateField, UUIDField } from '../../decorators/field.decorators.ts';
+import { NumberField } from '../../decorators/field.decorators.ts';
 import { DYNAMIC_TRANSLATION_DECORATOR_KEY } from '../../decorators/translate.decorator.ts';
 import { ContextProvider } from '../../providers/context.provider.ts';
 import type { AbstractEntity } from '../abstract.entity.ts';
 
 export class AbstractDto {
-  @UUIDField()
-  id!: Uuid;
+  @NumberField()
+  id!: number;
 
-  @DateField()
-  createdAt!: Date;
+  @NumberField()
+  createdAt!: Number;
 
-  @DateField()
-  updatedAt!: Date;
+  @NumberField()
+  updatedAt!: Number;
 
   translations?: AbstractTranslationDto[];
 

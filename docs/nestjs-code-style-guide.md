@@ -292,7 +292,7 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Auth([RoleType.USER])
   @ApiOkResponse({ type: UserDto, description: 'Get user by ID' })
-  async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
+  async getUser(@UUIDParam('id') userId: number): Promise<UserDto> {
     return this.userService.getUser(userId);
   }
 
@@ -481,7 +481,7 @@ export class UserService {
     return userEntity;
   }
 
-  async getUser(userId: Uuid): Promise<UserDto> {
+  async getUser(userId: number): Promise<UserDto> {
     const userEntity = await this.findOne({ id: userId });
     return userEntity.toDto();
   }
@@ -774,7 +774,7 @@ import type { CreatePostDto } from '../dtos/create-post.dto.ts';
 
 export class CreatePostCommand implements ICommand {
   constructor(
-    public userId: Uuid,
+    public userId: number,
     public createPostDto: CreatePostDto,
   ) {}
 }
@@ -818,7 +818,7 @@ export class CreatePostHandler
 import type { IQuery } from '@nestjs/cqrs';
 
 export class GetUserQuery implements IQuery {
-  constructor(public userId: Uuid) {}
+  constructor(public userId: number) {}
 }
 
 // Query handler

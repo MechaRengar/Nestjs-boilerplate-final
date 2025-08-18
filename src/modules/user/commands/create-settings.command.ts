@@ -8,7 +8,7 @@ import { UserSettingsEntity } from '../user-settings.entity.ts';
 
 export class CreateSettingsCommand implements ICommand {
   constructor(
-    public readonly userId: Uuid,
+    public readonly userId: number,
     public readonly createSettingsDto: CreateSettingsDto,
   ) {}
 }

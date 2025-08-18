@@ -821,8 +821,8 @@ export class UserFactory {
     user.lastName = overrides.lastName || 'Doe';
     user.email = overrides.email || 'john.doe@example.com';
     user.role = overrides.role || RoleType.USER;
-    user.createdAt = overrides.createdAt || new Date();
-    user.updatedAt = overrides.updatedAt || new Date();
+    user.createdAt = overrides.createdAt || Math.floor(Date.now() / 1000);
+    user.updatedAt = overrides.updatedAt || Math.floor(Date.now() / 1000);
 
     return Object.assign(user, overrides);
   }

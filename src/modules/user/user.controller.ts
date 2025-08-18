@@ -64,7 +64,7 @@ export class UserController {
     description: 'Get users list',
     type: UserDto,
   })
-  getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
+  getUser(@UUIDParam('id') userId: number): Promise<UserDto> {
     return this.userService.getUser(userId);
   }
 }

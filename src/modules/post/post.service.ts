@@ -22,7 +22,7 @@ export class PostService {
   ) {}
 
   @Transactional()
-  createPost(userId: Uuid, createPostDto: CreatePostDto): Promise<PostEntity> {
+  createPost(userId: number, createPostDto: CreatePostDto): Promise<PostEntity> {
     return this.commandBus.execute<CreatePostCommand, PostEntity>(
       new CreatePostCommand(userId, createPostDto),
     );
@@ -40,7 +40,7 @@ export class PostService {
     return items.toPageDto(pageMetaDto);
   }
 
-  async getSinglePost(id: Uuid): Promise<PostEntity> {
+  async getSinglePost(id: number): Promise<PostEntity> {
     const queryBuilder = this.postRepository
       .createQueryBuilder('post')
       .where('post.id = :id', { id });
@@ -54,7 +54,7 @@ export class PostService {
     return postEntity;
   }
 
-  async updatePost(id: Uuid, updatePostDto: UpdatePostDto): Promise<void> {
+  async updatePost(id: number, updatePostDto: UpdatePostDto): Promise<void> {
     const queryBuilder = this.postRepository
       .createQueryBuilder('post')
       .where('post.id = :id', { id });
@@ -70,7 +70,7 @@ export class PostService {
     await this.postRepository.save(updatePostDto);
   }
 
-  async deletePost(id: Uuid): Promise<void> {
+  async deletePost(id: number): Promise<void> {
     const queryBuilder = this.postRepository
       .createQueryBuilder('post')
       .where('post.id = :id', { id });

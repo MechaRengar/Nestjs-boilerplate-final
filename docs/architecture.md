@@ -155,14 +155,14 @@ Separates read and write operations for better scalability and maintainability:
 // Command for state changes
 export class CreatePostCommand implements ICommand {
   constructor(
-    public readonly userId: Uuid,
+    public readonly userId: number,
     public readonly createPostDto: CreatePostDto,
   ) {}
 }
 
 // Query for data retrieval
 export class GetPostQuery implements IQuery {
-  constructor(public readonly userId: Uuid) {}
+  constructor(public readonly userId: number) {}
 }
 ```
 
@@ -179,7 +179,7 @@ export class PostService {
   ) {}
 
   @Transactional()
-  createPost(userId: Uuid, createPostDto: CreatePostDto): Promise<PostEntity> {
+  createPost(userId: number, createPostDto: CreatePostDto): Promise<PostEntity> {
     return this.commandBus.execute<CreatePostCommand, PostEntity>(
       new CreatePostCommand(userId, createPostDto),
     );
@@ -227,7 +227,7 @@ user!: Relation<UserEntity>;
 #### Transaction Support
 ```typescript
 @Transactional()
-async createPost(userId: Uuid, createPostDto: CreatePostDto): Promise<PostEntity> {
+async createPost(userId: number, createPostDto: CreatePostDto): Promise<PostEntity> {
   // All database operations within this method are wrapped in a transaction
 }
 ```
@@ -243,7 +243,7 @@ async createPost(userId: Uuid, createPostDto: CreatePostDto): Promise<PostEntity
 ```typescript
 @Auth([RoleType.ADMIN, RoleType.USER])
 @Get(':id')
-async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
+async getUser(@UUIDParam('id') userId: number): Promise<UserDto> {
   return this.userService.getUser(userId);
 }
 ```
@@ -254,7 +254,7 @@ async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
 @AuthUser() user: UserEntity
 
 // Validate UUID parameters
-@UUIDParam('id') userId: Uuid
+@UUIDParam('id') userId: number
 ```
 
 ### API Documentation
@@ -269,7 +269,7 @@ async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
 @ApiTags('users')
 @ApiOkResponse({ type: UserDto, description: 'User retrieved successfully' })
 @Get(':id')
-async getUser(@UUIDParam('id') userId: Uuid): Promise<UserDto> {
+async getUser(@UUIDParam('id') userId: number): Promise<UserDto> {
   return this.userService.getUser(userId);
 }
 ```

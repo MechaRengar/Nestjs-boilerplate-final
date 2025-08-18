@@ -1,8 +1,7 @@
 import {
   Column,
-  CreateDateColumn,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  type ValueTransformer,
 } from 'typeorm';
 
 import { LanguageCode } from '../constants/language-code.ts';
@@ -19,22 +18,39 @@ import type {
  * It's experimental and recommended using it only in microservice architecture,
  * otherwise just delete and use your own entity.
  */
+
+// Transformer: convert Date <-> number (unix time in seconds)
+const unixTimestampTransformer: ValueTransformer = {
+  to: (value?: number) => {
+    if (!value) return Math.floor(Date.now() / 1000);
+    return value;
+  },
+  from: (value: Date | number) => {
+    if (value instanceof Date) {
+      return Math.floor(value.getTime() / 1000);
+    }
+    return Number(value);
+  },
+};
+
 export abstract class AbstractEntity<
   DTO extends AbstractDto = AbstractDto,
   O = never,
 > {
-  @PrimaryGeneratedColumn('uuid')
-  id!: Uuid;
+  @PrimaryGeneratedColumn('increment')
+  id!: number;
 
-  @CreateDateColumn({
-    type: 'timestamp',
+  @Column({
+    type: 'bigint',
+    transformer: unixTimestampTransformer,
   })
-  createdAt!: Date;
+  createdAt!: number;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
+  @Column({
+    type: 'bigint',
+    transformer: unixTimestampTransformer,
   })
-  updatedAt!: Date;
+  updatedAt!: number;
 
   translations?: AbstractTranslationEntity[];
 
@@ -43,7 +59,7 @@ export abstract class AbstractEntity<
 
     if (!dtoClass) {
       throw new Error(
-        `You need to use @UseDto on class (${this.constructor.name}) be able to call toDto function`,
+        `You need to use @UseDto on class (${this.constructor.name}) to be able to call toDto function`,
       );
     }
 

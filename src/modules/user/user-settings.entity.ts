@@ -19,8 +19,8 @@ export class UserSettingsEntity extends AbstractEntity<
   @Column({ default: false })
   isPhoneVerified?: boolean;
 
-  @Column({ type: 'uuid' })
-  userId?: string;
+  @Column()
+  userId?: number;
 
   @OneToOne(() => UserEntity, (user) => user.settings, {
     onDelete: 'CASCADE',
