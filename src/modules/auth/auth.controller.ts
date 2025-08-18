@@ -23,6 +23,7 @@ import { AuthService } from './auth.service.ts';
 import { LoginPayloadDto } from './dto/login-payload.dto.ts';
 import { UserLoginDto } from './dto/user-login.dto.ts';
 import { UserRegisterDto } from './dto/user-register.dto.ts';
+import { RefreshTokenDto } from './dto/refresh-token.dto.ts';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -48,7 +49,11 @@ export class AuthController {
       role: userEntity.role,
     });
 
-    return new LoginPayloadDto(userEntity.toDto(), token);
+    const refreshToken = await this.authService.createRefreshToken({
+      userId: userEntity.id,
+      role: userEntity.role,
+    });
+    return new LoginPayloadDto(userEntity.toDto(), token, refreshToken);
   }
 
   @Post('register')
@@ -67,6 +72,34 @@ export class AuthController {
     return createdUser.toDto({
       isActive: true,
     });
+  }
+
+  @Post('refresh-token')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: LoginPayloadDto, description: 'Successfully refresh token' })
+  async refreshToken(
+    @Body() refreshTokenData: RefreshTokenDto,
+  ): Promise<LoginPayloadDto> {
+    const { refreshToken } = refreshTokenData;
+    const payload = await this.authService.verifyRefreshToken(refreshToken);
+    if (!payload) {
+      throw new Error('Invalid refresh token');
+    }
+
+    const user = await this.userService.findOne({id: payload.userId});
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const token = await this.authService.createAccessToken({
+      userId: user.id,
+      role: user.role,
+    });
+    const refresh = await this.authService.createRefreshToken({
+      userId: user.id,
+      role: user.role,
+    });
+
+    return new LoginPayloadDto(user.toDto(), token, refresh);
   }
 
   @Version('1')

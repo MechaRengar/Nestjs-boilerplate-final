@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
+import { type JwtPayload } from 'jsonwebtoken';
 import { validateHash } from '../../common/utils.ts';
 import type { RoleType } from '../../constants/role-type.ts';
 import { TokenType } from '../../constants/token-type.ts';
@@ -18,18 +18,64 @@ export class AuthService {
     private configService: ApiConfigService,
     private userService: UserService,
   ) {}
+  async verifyRefreshToken(token: string): Promise<JwtPayload | null> {
+    try {
+      const payload = this.jwtService.verify(token, {
+        publicKey: this.configService.authConfig.publicKey,
+        algorithms: ['RS256'],
+      });
+
+      if (payload.type !== TokenType.REFRESH_TOKEN) {
+        return null;
+      }
+
+      return payload;
+    } catch (err) {
+      return null;
+    }
+  }
 
   async createAccessToken(data: {
     role: RoleType;
     userId: number;
   }): Promise<TokenPayloadDto> {
+    const payload = {
+      userId: data.userId,
+      type: TokenType.ACCESS_TOKEN,
+      role: data.role,
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn: this.configService.authConfig.jwtExpirationTime,
+      privateKey: this.configService.authConfig.privateKey,
+      algorithm: 'RS256',
+    });
+
     return new TokenPayloadDto({
       expiresIn: this.configService.authConfig.jwtExpirationTime,
-      token: await this.jwtService.signAsync({
-        userId: data.userId,
-        type: TokenType.ACCESS_TOKEN,
-        role: data.role,
-      }),
+      token,
+    });
+  }
+
+  async createRefreshToken(data: {
+    role: RoleType;
+    userId: number;
+  }): Promise<TokenPayloadDto> {
+    const payload = {
+      userId: data.userId,
+      type: TokenType.REFRESH_TOKEN,
+      role: data.role,
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn: this.configService.authConfig.jwtRefreshExpirationTime,
+      privateKey: this.configService.authConfig.privateKey,
+      algorithm: 'RS256',
+    });
+
+    return new TokenPayloadDto({
+      expiresIn: this.configService.authConfig.jwtRefreshExpirationTime,
+      token,
     });
   }
 
