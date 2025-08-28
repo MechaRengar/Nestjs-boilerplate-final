@@ -31,7 +31,7 @@ import { GoogleAuthClient } from './oauth/google';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, PublicStrategy, GoogleAuthClient],
-  exports: [JwtModule, AuthService, GoogleAuthClient],
+  providers: [AuthService, JwtStrategy, PublicStrategy], // GoogleAuthClient
+  exports: [JwtModule, AuthService], // GoogleAuthClient
 })
 export class AuthModule {}
