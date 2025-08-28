@@ -20,7 +20,7 @@ import { GoogleAuthClient } from './oauth/google';
         publicKey: configService.authConfig.publicKey,
         signOptions: {
           algorithm: 'RS256',
-              // expiresIn: configService.authConfig.jwtExpirationTime,
+          // expiresIn: configService.authConfig.jwtExpirationTime,
         },
         verifyOptions: {
           algorithms: ['RS256'],
@@ -31,7 +31,15 @@ import { GoogleAuthClient } from './oauth/google';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, PublicStrategy], // GoogleAuthClient
-  exports: [JwtModule, AuthService], // GoogleAuthClient
+  providers: [AuthService,
+     JwtStrategy,
+     PublicStrategy,
+     GoogleAuthClient
+    ], 
+  exports: [
+    JwtModule,
+    AuthService,
+    GoogleAuthClient
+  ], 
 })
 export class AuthModule {}

@@ -2,7 +2,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { ApiConfigService } from '../../../shared/services/api-config.service';
 // Update the import path below to the correct location of ApiException, for example:
 import { OAuth2Client } from 'google-auth-library';
-import { ApiException } from 'exceptions/api.exception';
+import { ApiException } from '../../../exceptions/api.exception';
 
 @Injectable()
 export class GoogleAuthClient {
