@@ -23,9 +23,9 @@ export abstract class DatabaseEntityAbstract {
     required: false,
     index: true,
     type: new Object({
-      _id: Types.ObjectId,
+      id: Number,
       email: String,
-      code: String,
+      phone: String,
       fullName: String,
     }),
   })
@@ -35,9 +35,9 @@ export abstract class DatabaseEntityAbstract {
     required: false,
     index: 'desc',
     type: new Object({
-      _id: Types.ObjectId,
+      id: Number,
       email: String,
-      code: String,
+      phone: String,
       fullName: String,
     }),
   })
