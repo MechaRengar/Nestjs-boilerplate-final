@@ -21,10 +21,12 @@ import { UserModule } from './modules/user/user.module.ts';
 import { ApiConfigService } from './shared/services/api-config.service.ts';
 import { SharedModule } from './shared/shared.module.ts';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ProfileModule } from './modules/profiles/profiles.module.ts';
 
 @Module({
   imports: [
     AuthModule,
+    ProfileModule,
     UserModule,
     PostModule,
     ClsModule.forRoot({

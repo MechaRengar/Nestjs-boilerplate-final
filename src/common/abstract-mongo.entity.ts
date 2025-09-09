@@ -9,7 +9,7 @@ import {
   DATABASE_UPDATED_BY_FIELD_NAME,
 } from './../constants/database';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import utc from 'dayjs/plugin/utc.js';
 dayjs.extend(utc);
 
 export abstract class DatabaseEntityAbstract {
