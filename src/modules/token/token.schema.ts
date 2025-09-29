@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DatabaseEntity } from '../../decorators/database.decorator';
-import { DatabaseEntityAbstract } from '../../common/abstract-mongo.entity';
+import { DatabaseSchemaAbstract } from '../../common/abstract-mongo.schema';
 
 export enum TokenType {
   REFRESH = 'refresh',
@@ -80,7 +80,7 @@ class DeviceInfo {
 
 @Schema()
 @DatabaseEntity({ collection: 'tokens' })
-export class Token extends DatabaseEntityAbstract {
+export class Token extends DatabaseSchemaAbstract {
   @Prop({ required: true, index: true })
   token!: string;
 

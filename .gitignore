@@ -93,3 +93,5 @@ db-data
 .vuepress/.cache
 # VuePress default build output directory
 .vuepress/dist
+
+src/metadata.ts

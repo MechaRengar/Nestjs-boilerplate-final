@@ -2,14 +2,23 @@ import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common'
 import { ProfilesService } from './profiles.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { AuthUser } from '../../decorators/auth-user.decorator';
 
 @Controller('profiles')
 export class ProfilesController {
   constructor(private readonly profilesService: ProfilesService) {}
 
   @Post()
-  create(@Body() createProfileDto: CreateProfileDto) {
-    return this.profilesService.create(createProfileDto);
+  async create(
+    @Body() createProfileDto: CreateProfileDto,
+    @AuthUser() user: any,
+) {
+const userId = user.id;
+    const profile = await this.profilesService.create(createProfileDto, userId);
+    return {
+      message: 'Profile created successfully',
+      data: profile,
+    };
   }
 
   @Get()

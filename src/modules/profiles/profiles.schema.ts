@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { DatabaseEntity } from '../../decorators/database.decorator';
-import { DatabaseEntityAbstract } from '../../common/abstract-mongo.entity';
+import { DatabaseSchemaAbstract } from '../../common/abstract-mongo.schema';
+import { Types } from 'mongoose';
 
 @Schema({ _id: false })
 class OS {
@@ -117,18 +118,6 @@ class Languages {
 }
 
 @Schema({ _id: false })
-class Plugin {
-  @Prop()
-  name!: string;
-
-  @Prop()
-  version?: string;
-
-  @Prop()
-  path?: string;
-}
-
-@Schema({ _id: false })
 class Platform {
   @Prop()
   name!: string;
@@ -151,7 +140,7 @@ class Bookmark {
 
 @Schema()
 @DatabaseEntity({ collection: 'profiles' })
-export class Profile extends DatabaseEntityAbstract {
+export class Profile extends DatabaseSchemaAbstract {
   @Prop({ required: true })
   name!: string;
 
@@ -182,8 +171,8 @@ export class Profile extends DatabaseEntityAbstract {
   @Prop({ type: Languages })
   languages!: Languages;
 
-  @Prop({ type: [Plugin] })
-  plugins!: Plugin[];
+  @Prop({ type: Types.ObjectId, ref: 'plugingroup' })
+  plugin_group!: Types.ObjectId;
 
   @Prop({ type: Platform })
   platform!: Platform;

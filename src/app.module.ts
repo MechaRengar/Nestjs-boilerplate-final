@@ -51,8 +51,8 @@ import { ProfileModule } from './modules/profiles/profiles.module.ts';
         uri: process.env.MONGODB_URI,
         useUnifiedTopology: true,
         // dbName: process.env.MONGODB_NAME,
-        // autoCreate: true,
-        // autoIndex: true,
+        autoCreate: true,
+        autoIndex: true,
       }),
     }),
     TypeOrmModule.forRootAsync({

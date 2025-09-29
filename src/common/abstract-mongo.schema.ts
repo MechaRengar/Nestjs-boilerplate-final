@@ -7,12 +7,12 @@ import {
   DATABASE_DELETED_AT_FIELD_NAME,
   DATABASE_UPDATED_AT_FIELD_NAME,
   DATABASE_UPDATED_BY_FIELD_NAME,
-} from './../constants/database';
+} from '../constants/database';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
 dayjs.extend(utc);
 
-export abstract class DatabaseEntityAbstract {
+export abstract class DatabaseSchemaAbstract {
   @Prop({
     type: Types.ObjectId,
     default: () => new Types.ObjectId(),
