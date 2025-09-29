@@ -105,9 +105,9 @@ export class AuthController {
   @Version('1')
   @Get('me')
   @HttpCode(HttpStatus.OK)
-  @Auth([RoleType.USER, RoleType.ADMIN])
+  @Auth([RoleType.ADMIN, RoleType.USER])
   @ApiOkResponse({ type: UserDto, description: 'current user info' })
-  getCurrentUser(@AuthUser() user: UserEntity): UserDto {
-    return user.toDto();
+  async getCurrentUser(@AuthUser() user: UserEntity): Promise<UserDto> {
+    return await this.authService.getMe(user.id).then(u => u.toDto());
   }
 }

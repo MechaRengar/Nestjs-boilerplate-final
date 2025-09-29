@@ -18,6 +18,17 @@ export class AuthService {
     private configService: ApiConfigService,
     private userService: UserService,
   ) {}
+  async getMe(userId: number): Promise<UserEntity> {
+    if(!userId) {
+      throw new UserNotFoundException();
+    }
+    const user = await this.userService.findOne({ id: userId });
+    if (!user) {
+      throw new UserNotFoundException();
+    }
+    return user;
+  }
+
   async verifyRefreshToken(token: string): Promise<JwtPayload | null> {
     try {
       const payload = this.jwtService.verify(token, {
